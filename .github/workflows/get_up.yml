@@ -31,6 +31,8 @@ jobs:
               run: pnpm run build
 
             - name: Create Image
+              env:
+                SENTENCE_API: ${{ secrets.SENTENCE_API }}
               run: pnpm run start --cookie "${{ secrets.BING_COOKIE }}"
 
             - name: Push New Pic

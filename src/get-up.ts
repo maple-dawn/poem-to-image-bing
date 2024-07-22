@@ -1,8 +1,10 @@
 import "dotenv/config";
-import { SENTENCE_API } from "./const";
 
 import { BingImageCreator } from "./bing-image-creator";
 import type { SentenceResponse, Response } from "./types";
+
+// 使用环境变量替代导入的常量
+const SENTENCE_API = process.env.SENTENCE_API;
 
 /**
  * Get the sentence
@@ -11,6 +13,9 @@ import type { SentenceResponse, Response } from "./types";
  **/
 async function getSentence(): Promise<SentenceResponse> {
     try {
+        if (!SENTENCE_API) {
+            throw new Error("SENTENCE_API environment variable is not set");
+        }
         const res = await fetch(SENTENCE_API);
         const data: SentenceResponse = await res.json();
         return data;
