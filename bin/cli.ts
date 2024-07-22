@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import stream from "stream";
 import { promisify } from "util";
+import crypto from "crypto";
 
 const pipeline = promisify(stream.pipeline);
 
@@ -24,8 +25,9 @@ async function init() {
                 fs.mkdirSync(imagesPath);
             }
 
-            // 在 images 目录下，创建一个以时间戳命名的文件夹，将图片放入其中
-            const imagesFolderName = Date.now().toString();
+            // 计算 res.content 的 MD5 值
+            const md5Hash = crypto.createHash('md5').update(res.content).digest('hex');
+            const imagesFolderName = md5Hash;
             const imagesFolderPath = path.join(imagesPath, imagesFolderName);
             if (!fs.existsSync(imagesFolderPath)) {
                 fs.mkdirSync(imagesFolderPath);
